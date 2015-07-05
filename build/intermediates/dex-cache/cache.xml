@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Karl\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="C:\Users\Karl\StudioProjects\BarKeep\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-631a5eae0b23e3afaff4ed7995c9b2adb0fb806c.jar" />
+    </item>
+    <item
+        jar="C:\Users\Karl\StudioProjects\BarKeep\app\libs\android-sqlite-asset-helper.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="20f039a3336c18f93cfddfa1a49ce91a55361c40">
+        <dex dex="C:\Users\Karl\StudioProjects\BarKeep\app\build\intermediates\pre-dexed\debug\android-sqlite-asset-helper-d5b1bcba10079746ada8a7426c0825e888364558.jar" />
+    </item>
+
+</items>

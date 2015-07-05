@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kjcondron.barkeep"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name="com.kjcondron.barkeep.App"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_barkeep"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.kjcondron.barkeep.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.AddActivity"
+            android:label="@string/title_activity_add"
+            android:parentActivityName="com.kjcondron.barkeep.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kjcondron.barkeep.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.UseActivity"
+            android:label="@string/title_activity_use"
+            android:parentActivityName="com.kjcondron.barkeep.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kjcondron.barkeep.MainActivity" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchActivity" />
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.RemoveActivity"
+            android:label="@string/title_activity_remove"
+            android:parentActivityName="com.kjcondron.barkeep.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kjcondron.barkeep.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.ProductDetailActivity"
+            android:label="@string/title_activity_product_detail" >
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.ShopActivity"
+            android:label="@string/title_activity_shop" >
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:parentActivityName="com.kjcondron.barkeep.UseActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kjcondron.barkeep.UseActivity" />
+        </activity>
+        <activity
+            android:name="com.dropbox.client2.android.AuthActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask" >
+            <intent-filter>
+
+                <!-- Change this to be db- followed by your app key -->
+                <data android:scheme="db-6l5plk28ag6lik9" />
+ 
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.AdVSrchActivity"
+            android:label="@string/title_activity_ad_vsrch"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="com.kjcondron.barkeep.FullScreenPagerActivity"
+            android:label="@string/title_activity_full_screen_scroll"
+            android:parentActivityName="com.kjcondron.barkeep.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kjcondron.barkeep.MainActivity" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchActivity" />
+        </activity>
+    </application>
+
+</manifest>

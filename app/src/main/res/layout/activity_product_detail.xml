@@ -1,0 +1,93 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_box">
+    
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:layout_centerInParent="true"
+    tools:context=".ProductDetailActivity" >
+    
+    <TextView
+        android:id="@+id/prodDetail_textViewType"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:text="Type" />
+
+    <Spinner
+        android:id="@+id/prodDetail_typeSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/prodDetail_textViewType" />
+   
+    <TextView
+        android:id="@+id/prodDetail_textViewBrand"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:text="Brand"
+        android:layout_below="@+id/prodDetail_typeSpinner" />
+  
+    <Spinner
+        android:id="@+id/prodDetail_brandSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/prodDetail_textViewBrand"
+        android:layout_below="@+id/prodDetail_typeSpinner"
+         />
+    
+     <TextView
+        android:id="@+id/prodDetail_textViewProd"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:text="Product"
+        android:layout_below="@+id/prodDetail_brandSpinner" />
+  
+     <Spinner
+        android:id="@+id/prodDetail_prodSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/prodDetail_textViewProd"
+        android:layout_below="@+id/prodDetail_brandSpinner" /> 
+    
+    <TextView
+        android:id="@+id/prodDetail_textViewSize"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:text="Size"
+        android:layout_below="@+id/prodDetail_prodSpinner" />
+    
+    <Spinner
+        android:id="@+id/prodDetail_sizeSpinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/prodDetail_textViewSize"
+        android:layout_below="@+id/prodDetail_prodSpinner" />
+    
+    <Button
+        android:id="@+id/prodDetail_commitItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:onClick="commitItem"
+        android:text="Add"
+        android:layout_below="@+id/prodDetail_sizeSpinner" />
+    
+    <Button
+        android:id="@+id/prodDetail_commitItemAddToProducts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="22dp"
+        android:onClick="commitItemAddToProducts"
+        android:text="Add + Update"
+        android:layout_below="@+id/prodDetail_sizeSpinner" />
+
+</RelativeLayout>
+
+</RelativeLayout>

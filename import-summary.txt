@@ -1,0 +1,137 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* README.md
+* Thumbs.db
+* dropbox-sync-sdk-android\
+* dropbox-sync-sdk-android\javadoc\
+* dropbox-sync-sdk-android\javadoc\allclasses-frame.html
+* dropbox-sync-sdk-android\javadoc\allclasses-noframe.html
+* dropbox-sync-sdk-android\javadoc\com\
+* dropbox-sync-sdk-android\javadoc\com\dropbox\
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccount.Listener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccount.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccountInfo.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccountManager.AccountListener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccountManager.ConfigurationMismatchException.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccountManager.MultipleAccountsException.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxAccountManager.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastore.SyncStatusListener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastore.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastoreInfo.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastoreManager.ListListener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastoreManager.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxDatastoreStatus.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.AlreadyOpen.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.ApiUsage.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Disallowed.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.DiskSpace.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Exists.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.InvalidParameter.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Network.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.NetworkConnection.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.NetworkTimeout.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.NoThumb.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.NotFound.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Parent.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Quota.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.RecoverableSystem.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Server.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Ssl.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.Unauthorized.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxException.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.AtomType.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.FieldNotFound.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.IllegalFieldName.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.ValueType.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.WrongValueType.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFields.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFile.Listener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFile.StreamExclusionException.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFile.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileInfo.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileStatus.PendingOperation.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileStatus.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.PathListener.Mode.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.PathListener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.SyncStatusListener.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.ThumbFormat.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.ThumbSize.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxFileSystem.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxList.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxPath.InvalidPathException.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxPath.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxRecord.IllegalRecordId.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxRecord.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxSyncStatus.OperationStatus.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxSyncStatus.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxTable.IllegalTableId.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxTable.QueryResult.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxTable.ResolutionRule.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\DbxTable.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\package-frame.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\package-summary.html
+* dropbox-sync-sdk-android\javadoc\com\dropbox\sync\android\package-tree.html
+* dropbox-sync-sdk-android\javadoc\constant-values.html
+* dropbox-sync-sdk-android\javadoc\deprecated-list.html
+* dropbox-sync-sdk-android\javadoc\help-doc.html
+* dropbox-sync-sdk-android\javadoc\index-all.html
+* dropbox-sync-sdk-android\javadoc\index.html
+* dropbox-sync-sdk-android\javadoc\overview-tree.html
+* dropbox-sync-sdk-android\javadoc\package-list
+* dropbox-sync-sdk-android\javadoc\resources\
+* dropbox-sync-sdk-android\javadoc\resources\background.gif
+* dropbox-sync-sdk-android\javadoc\resources\tab.gif
+* dropbox-sync-sdk-android\javadoc\resources\titlebar.gif
+* dropbox-sync-sdk-android\javadoc\resources\titlebar_end.gif
+* dropbox-sync-sdk-android\javadoc\serialized-form.html
+* dropbox-sync-sdk-android\javadoc\stylesheet.css
+* ic_launcher-web.png
+* proguard-project.txt
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:19.1.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app\src\main\AndroidManifest.xml
+* assets\ => app\src\main\assets\
+* libs\android-sqlite-asset-helper.jar => app\libs\android-sqlite-asset-helper.jar
+* res\ => app\src\main\res\
+* src\ => app\src\main\java\
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

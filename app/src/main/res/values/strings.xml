@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BarKeep</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_add">Add Product</string>
+    <string name="title_activity_use">Use Product</string>
+    <string name="title_activity_remove">Remove Product</string>
+    <string name="title_activity_product_detail">ProductDetailActivity</string>
+    <string name="title_activity_shop">ShopActivity</string>
+    <string name="search_title">search</string>
+    <string name="title_activity_search">Search</string>
+    <string name="search_label">Search Label</string>
+    <string name="search_hint">Enter Keyword</string>
+    <string name="title_activity_ad_vsrch">Advanced Search</string>
+    <string name="all_bars">All Bars</string>
+    <string name="all_prods">All Products</string>
+
+    <string-array name="search_types_array">
+        <item>All</item>
+        <item>Brands</item>
+        <item>Product Name</item>
+    </string-array>
+
+    <string name="title_activity_full_screen_scroll">FullScreenScrollActivity</string>
+
+</resources>
