@@ -19,8 +19,14 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 public class FullScreenPagerActivity extends FragmentActivity {
-	
-	private Boolean mGridView = false;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mPager.getAdapter().notifyDataSetChanged();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private Boolean mGridView = false;
 	private AlertDialog.Builder mbuilder; 
 	private int mItemLayoutID = R.layout.layout_inv_item_for_list;
 	private MenuItem mSearchMenuItem;
@@ -114,7 +120,7 @@ public class FullScreenPagerActivity extends FragmentActivity {
 			return true;
 		case R.id.menuadd:
 			Intent aIntent = new Intent(this, AddActivity.class);
-	    	startActivity(aIntent);
+			startActivityForResult(aIntent, 1);
 			return true;
 		case R.id.menushopping:
 			Intent sIntent = new Intent(this, ShopActivity.class);
