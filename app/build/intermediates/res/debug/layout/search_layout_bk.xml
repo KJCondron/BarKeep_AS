@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.kjcondron.barkeep.BKSeachWidget xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-</com.kjcondron.barkeep.BKSeachWidget>
-<!-- From: file:/C:/Users/Karl/StudioProjects/BarKeep/app/src/main/res/layout/search_layout_bk.xml -->
