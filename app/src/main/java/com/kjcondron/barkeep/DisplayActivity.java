@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+// not used anyomre?
 public abstract class DisplayActivity extends Activity {
 
 	private Boolean gridView = false;
@@ -70,14 +71,16 @@ public abstract class DisplayActivity extends Activity {
 		}
 	}
 	
-	
+
+    // not called
 	protected AbsListView getLGView(int layoutId, int viewID, int itemLayoutID)
 	{
 		setContentView(layoutId);
 		final AbsListView view = (AbsListView) findViewById(viewID);
 		try{
-		view.setOnItemClickListener(new OnItemClickListener() {
-	        
+			Toast.makeText(this, "setOnItemClickListener 1", Toast.LENGTH_LONG).show();
+
+			view.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	            SimpleCursorAdapter Cu = (SimpleCursorAdapter)parent.getAdapter();
 	            Integer iid = Cu.getCursor().getInt(Cu.getCursor().getColumnIndex("_id"));

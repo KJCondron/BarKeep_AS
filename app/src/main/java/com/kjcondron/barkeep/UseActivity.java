@@ -1,3 +1,4 @@
+/*
 package com.kjcondron.barkeep;
 
 import android.database.Cursor;
@@ -32,3 +33,4 @@ public class UseActivity extends DisplayActivity {
 	}
 	
 }
+*/

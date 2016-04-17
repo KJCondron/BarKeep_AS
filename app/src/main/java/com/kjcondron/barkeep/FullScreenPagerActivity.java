@@ -195,7 +195,6 @@ public class FullScreenPagerActivity extends FragmentActivity {
 				try
 				{
 					bdl.putString(UseFragment.ITEM_TYPE, getPageTitle(pos));
-								
 				}
 				catch(Exception e)
 				{
