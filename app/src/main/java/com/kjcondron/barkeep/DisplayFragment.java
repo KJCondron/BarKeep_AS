@@ -143,8 +143,6 @@ public abstract class DisplayFragment extends Fragment {
 
     class ItemLongClickListener implements OnItemLongClickListener {
 
-        public final static String UPC = "com.kjcondron.barkeep.UPC";
-
         final LayoutInflater mInflater;
         final Context mCtxt;
 
@@ -159,7 +157,8 @@ public abstract class DisplayFragment extends Fragment {
             Intent in = new Intent(mCtxt, ProductDetailActivity.class);
             SimpleCursorAdapter Cu = (SimpleCursorAdapter) parent.getAdapter();
             String upc = Cu.getCursor().getString(Cu.getCursor().getColumnIndex("upc"));
-            in.putExtra(UPC, upc);
+            in.putExtra(ProductDetailActivity.UPC, upc);
+			in.putExtra(ProductDetailActivity.EDIT, true);
             startActivity(in);
             return true;
         }

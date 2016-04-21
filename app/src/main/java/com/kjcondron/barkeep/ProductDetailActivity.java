@@ -25,12 +25,14 @@ import android.widget.FilterQueryProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class ProductDetailActivity extends Activity {
 	
 	public final static String ADD_TO_DB = "com.kjcondron.barkeep.ADD_TO_DB";
 	public final static String UPC = "com.kjcondron.barkeep.UPC";
-	public final static Integer IDCOL = 0;
+    public final static String EDIT = "com.kjcondron.barkeep.EDIT";
+    public final static Integer IDCOL = 0;
 	public final static Integer TYPENAMECOL = 1;
 	
 	private DBHelper m_db;
@@ -58,7 +60,7 @@ public class ProductDetailActivity extends Activity {
 		findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
 		findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
 	}
-	
+
 	private void createSingleProduct()
 	{
 
@@ -98,6 +100,47 @@ public class ProductDetailActivity extends Activity {
     	}
     
 	}
+
+    private void createEdit()
+    {
+        Toast.makeText(this, "Create Edit", Toast.LENGTH_LONG).show();
+
+        try{
+            Spinner typeSpinner = (Spinner) findViewById(R.id.prodDetail_typeSpinner);
+            Spinner brandSpinner = (Spinner) findViewById(R.id.prodDetail_brandSpinner);
+            Spinner productSpinner = (Spinner) findViewById(R.id.prodDetail_prodSpinner);
+            Spinner sizeSpinner = (Spinner) findViewById(R.id.prodDetail_sizeSpinner);
+
+            Intent intent = getIntent();
+
+            ArrayAdapter<CharSequence> adapter =
+                    new ArrayAdapter<CharSequence>(
+                            this,
+                            android.R.layout.simple_spinner_item);
+
+            String upc = intent.getStringExtra(UPC);
+
+            Cursor upcDeets = m_db.getAllAndFromUPC(upc);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            typeSpinner.setAdapter(adapter);
+
+            setupSpinner(upcDeets, "product_type", typeSpinner);
+            setupSpinner(upcDeets, "brand", brandSpinner);
+            setupSpinner(upcDeets, "product_name", productSpinner);
+            setupSpinner(upcDeets, "size", sizeSpinner);
+
+            findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
+            findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
+
+
+        }
+        catch(Exception e)
+        {
+            MainActivity.log_exception(this, e, "ProductDetailActivity.onCreateAllSingleProduct");
+        }
+
+    }
 	
 	// to-do fix this first
 	private void createProductNotFound()
@@ -152,13 +195,15 @@ public class ProductDetailActivity extends Activity {
 		Intent intent = getIntent();
 	    mAddToDB = intent.getBooleanExtra(ADD_TO_DB, false);
 	    mHaveUPC = intent.hasExtra(UPC);
+
+        boolean haveEdit = intent.hasExtra(EDIT);
 	    
-	    if(mHaveUPC)
+	    if(mHaveUPC && !haveEdit)
 	    	if(mAddToDB)
 	    		createProductNotFound();
 	    	else
 	    		createSingleProduct();
-	    else if(mHaveEdit)
+	    else if(mHaveUPC && haveEdit)
 			createEdit();
 		else
 	    	createAllProducts();
