@@ -147,7 +147,7 @@ public class ProductDetailActivity extends Activity {
 		
 		// a) All products in db, with first spinner set up to show current category
 		// b) specific product found in db (1 per spinner / should be text boxes)
-		// c) an not found upc with editable spinners to allow selection / entry of detail = ADD_TO_DB 
+		// c) a not found upc with editable spinners to allow selection / entry of detail = ADD_TO_DB
 		
 		Intent intent = getIntent();
 	    mAddToDB = intent.getBooleanExtra(ADD_TO_DB, false);
@@ -158,7 +158,9 @@ public class ProductDetailActivity extends Activity {
 	    		createProductNotFound();
 	    	else
 	    		createSingleProduct();
-	    else
+	    else if(mHaveEdit)
+			createEdit();
+		else
 	    	createAllProducts();
 	    
 	}

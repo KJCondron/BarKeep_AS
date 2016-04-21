@@ -3,6 +3,7 @@ package com.kjcondron.barkeep;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -142,6 +143,8 @@ public abstract class DisplayFragment extends Fragment {
 
     class ItemLongClickListener implements OnItemLongClickListener {
 
+        public final static String UPC = "com.kjcondron.barkeep.UPC";
+
         final LayoutInflater mInflater;
         final Context mCtxt;
 
@@ -153,6 +156,11 @@ public abstract class DisplayFragment extends Fragment {
 
         public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
             Toast.makeText(mCtxt, "Item Long Click", Toast.LENGTH_LONG).show();
+            Intent in = new Intent(mCtxt, ProductDetailActivity.class);
+            SimpleCursorAdapter Cu = (SimpleCursorAdapter) parent.getAdapter();
+            String upc = Cu.getCursor().getString(Cu.getCursor().getColumnIndex("upc"));
+            in.putExtra(UPC, upc);
+            startActivity(in);
             return true;
         }
     }
