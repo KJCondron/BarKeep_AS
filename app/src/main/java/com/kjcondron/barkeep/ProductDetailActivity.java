@@ -105,11 +105,12 @@ public class ProductDetailActivity extends Activity {
     {
         Toast.makeText(this, "Create Edit", Toast.LENGTH_LONG).show();
 
+        setContentView(R.layout.layout_add_product);
+        ActionBar ab = getActionBar();
+        ab.setTitle("Edit Product");
+
         try{
             Spinner typeSpinner = (Spinner) findViewById(R.id.prodDetail_typeSpinner);
-            Spinner brandSpinner = (Spinner) findViewById(R.id.prodDetail_brandSpinner);
-            Spinner productSpinner = (Spinner) findViewById(R.id.prodDetail_prodSpinner);
-            Spinner sizeSpinner = (Spinner) findViewById(R.id.prodDetail_sizeSpinner);
 
             Intent intent = getIntent();
 
@@ -120,15 +121,17 @@ public class ProductDetailActivity extends Activity {
 
             String upc = intent.getStringExtra(UPC);
 
-            Cursor upcDeets = m_db.getAllAndFromUPC(upc);
+            Cursor upcDeets = m_db.getFromUPC(upc);
+            upcDeets.moveToFirst();
+            assert(upcDeets.getCount() == 1);
 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             typeSpinner.setAdapter(adapter);
 
-            setupSpinner(upcDeets, "product_type", typeSpinner);
-            setupSpinner(upcDeets, "brand", brandSpinner);
-            setupSpinner(upcDeets, "product_name", productSpinner);
-            setupSpinner(upcDeets, "size", sizeSpinner);
+			setupTypeSpinner(upcDeets.getString(upcDeets.getColumnIndex("product_type")));
+			setupTypeListener(true);
+			setupBrandAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("brand")));
+			setupProductAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("product_name")));
 
             findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
             findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
@@ -137,7 +140,7 @@ public class ProductDetailActivity extends Activity {
         }
         catch(Exception e)
         {
-            MainActivity.log_exception(this, e, "ProductDetailActivity.onCreateAllSingleProduct");
+            MainActivity.log_exception(this, e, "ProductDetailActivity.createEdit");
         }
 
     }
@@ -146,7 +149,7 @@ public class ProductDetailActivity extends Activity {
 	private void createProductNotFound()
 	{
 		setContentView(R.layout.layout_add_product);
-		ActionBar ab = getActionBar();
+        ActionBar ab = getActionBar();
 		ab.setTitle("Product Not Found");
 		final boolean guessFromInternet = true;
 		try
@@ -165,11 +168,11 @@ public class ProductDetailActivity extends Activity {
 			{
 				type = m_db.getTypes().getString(TYPENAMECOL);
 			}
-	    	
-	    	setupTypeSpinner(type);
-	    	setupTypeListener(true);
+
+            setupTypeSpinner(type);
+            setupTypeListener(true);
 			setupBrandAutoComplete(brand);
-			setupProductAutoComplete();
+			setupProductAutoComplete(null);
 	    }
 	    catch(Exception e)
 	    {
@@ -227,7 +230,7 @@ public class ProductDetailActivity extends Activity {
 	private String getBrandAuto()
 	{
 		return ((AutoCompleteTextView) findViewById(
-					R.id.prodDetail_brandACTV)).getText().toString();
+                R.id.prodDetail_brandACTV)).getText().toString();
 	}
 	
 	private String getProductAuto()
@@ -309,7 +312,7 @@ public class ProductDetailActivity extends Activity {
 			    	Cursor c = (Cursor)bs.getSelectedItem();
 			    	String brand = c.getString(c.getColumnIndex("brand"));
 			    	TextView tv = (TextView) selectedItemView;
-			    	String prod= tv.getText().toString();
+			    	String prod = tv.getText().toString();
 			    	setupSizeSpinner(getType(), brand, prod);
 		    	}
 		    }
@@ -379,7 +382,7 @@ public class ProductDetailActivity extends Activity {
 		    typeSpinner.setAdapter(adapter);
 		    for(int i=0; i<adapter.getCount(); ++i)
 		    {
-		    	SQLiteCursor cur = (SQLiteCursor)adapter.getItem(i);
+		    	SQLiteCursor cur = (SQLiteCursor) adapter.getItem(i);
 		    	int val = cur.getInt(IDCOL);
 		    	if(val == typeid)
 		    	{
@@ -524,7 +527,7 @@ public class ProductDetailActivity extends Activity {
 	    
 	}
 	
-	protected void setupProductAutoComplete()
+	protected void setupProductAutoComplete(String productName)
 	{
 		try
 		{
@@ -540,67 +543,65 @@ public class ProductDetailActivity extends Activity {
 		    		c, 
 		    		new String[]{ "product_name" },
 		    		new int[] { android.R.id.text1 },
-		    		CursorAdapter.NO_SELECTION );
-		    
-		    adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
-				
-				@Override
-				public CharSequence convertToString(Cursor cursor) {
-					return cursor.getString(cursor.getColumnIndex("product_name"));
-				}
-			});
+		    		CursorAdapter.NO_SELECTION);
+
+            adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+
+                @Override
+                public CharSequence convertToString(Cursor cursor) {
+                    return cursor.getString(cursor.getColumnIndex("product_name"));
+                }
+            });
 		    
 		    final Context ctxt = this;
-		    adapter.setFilterQueryProvider(new FilterQueryProvider() {
-				
-				@Override
-				public Cursor runQuery(CharSequence constraint) {
-					try
-					{
-						return m_db.getProductsFilter(getType(), getBrandAuto(), constraint);
-					}
-					catch(Exception e)
-					{
-						MainActivity.log_exception(ctxt, e, "setupProductAutoComplete.runQuery");
-						return null;
-					}
-				}
-			});
+            adapter.setFilterQueryProvider(new FilterQueryProvider() {
+
+                @Override
+                public Cursor runQuery(CharSequence constraint) {
+                    try {
+                        return m_db.getProductsFilter(getType(), getBrandAuto(), constraint);
+                    } catch (Exception e) {
+                        MainActivity.log_exception(ctxt, e, "setupProductAutoComplete.runQuery");
+                        return null;
+                    }
+                }
+            });
 		    
 		    prod.setAdapter(adapter);
 		    
 		    prod.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					AutoCompleteTextView av = (AutoCompleteTextView) v;
-					av.showDropDown();
-					return;
-				}
-			});
+
+                @Override
+                public void onClick(View v) {
+                    AutoCompleteTextView av = (AutoCompleteTextView) v;
+                    av.showDropDown();
+                    return;
+                }
+            });
 		    
 		    prod.setOnItemClickListener(new OnItemClickListener() {
-			
-		    	@Override
-		    	public void onItemClick(AdapterView<?> parent, View selected, int pos, long id)
-		    	{
-		    		return;
-		    	}
-		    });
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View selected, int pos, long id) {
+                    return;
+                }
+            });
 		    
 		    prod.setOnFocusChangeListener(new OnFocusChangeListener() {
-				
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if(hasFocus)
-					{
-						AutoCompleteTextView av = (AutoCompleteTextView) v;
-						//av.showDropDown();
-					}
-				}
-			});
-		
 
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        AutoCompleteTextView av = (AutoCompleteTextView) v;
+                        //av.showDropDown();
+                    }
+                }
+            });
+
+            if(prod != null)
+                prod.setText(productName);
+            else
+                prod.setText(productName);
 		}
 		catch(Exception e)
 		{

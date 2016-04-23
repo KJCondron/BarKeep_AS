@@ -321,12 +321,14 @@ public class DBHelper extends SQLiteAssetHelper  {
 			// and the have to match the categories hard coded.
 			// to-do fix that maybe.
 
-			String sql1 = MessageFormat.format("Select * from vProducts where upc=\"{0}\" ", upc);
-			String sql2 = MessageFormat.format("Select * from vProducts where upc<>\"{0}\" ", upc);
+            String columns = "_id, product_type, brand, product_name, size";
+			String sql1 = MessageFormat.format("Select {1}, 0 as sort from vProducts where upc=\"{0}\" ", upc, columns);
+			String sql2 = MessageFormat.format("Select {1}, 1 as sort from vProducts where upc<>\"{0}\" ", upc, columns);
 
-			String sql = sql1 + " UNION " + sql2;
+			String sql = sql1 + " UNION " + sql2 + " order by sort asc";
 
 			Cursor c = db.rawQuery(sql, null);
+
 			if(c.getCount() > 0)
 				return c;
 		}
