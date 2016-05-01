@@ -153,7 +153,6 @@ public abstract class DisplayFragment extends Fragment {
         }
 
         public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-            Toast.makeText(mCtxt, "Item Long Click", Toast.LENGTH_LONG).show();
             Intent in = new Intent(mCtxt, ProductDetailActivity.class);
             SimpleCursorAdapter Cu = (SimpleCursorAdapter) parent.getAdapter();
             String upc = Cu.getCursor().getString(Cu.getCursor().getColumnIndex("upc"));
@@ -176,7 +175,6 @@ public abstract class DisplayFragment extends Fragment {
 		view.setAdapter(adapter);
 		try{
 			final Context ctxt = getActivity();
-			Toast.makeText(ctxt, "setOnItemClickListener 2", Toast.LENGTH_LONG).show();
 			view.setOnItemClickListener( new ItemClickListener(inflater, ctxt) );
 		    view.setOnItemLongClickListener(new ItemLongClickListener(inflater, ctxt));
 	    }

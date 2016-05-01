@@ -25,7 +25,6 @@ import android.widget.FilterQueryProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 public class ProductDetailActivity extends Activity {
 	
@@ -103,8 +102,6 @@ public class ProductDetailActivity extends Activity {
 
     private void createEdit()
     {
-        Toast.makeText(this, "Create Edit", Toast.LENGTH_LONG).show();
-
         setContentView(R.layout.layout_add_product);
         ActionBar ab = getActionBar();
         ab.setTitle("Edit Product");
@@ -132,6 +129,7 @@ public class ProductDetailActivity extends Activity {
 			setupTypeListener(true);
 			setupBrandAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("brand")));
 			setupProductAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("product_name")));
+            setSizeAuto(upcDeets.getString(upcDeets.getColumnIndex("size")));
 
             findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
             findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
@@ -244,7 +242,16 @@ public class ProductDetailActivity extends Activity {
 		return ((AutoCompleteTextView) findViewById(
 					R.id.prodDetail_sizeACTV)).getText().toString();
 	}
-		
+
+	private void setSizeAuto(String sz)
+	{
+		AutoCompleteTextView asz = ((AutoCompleteTextView) findViewById(
+				R.id.prodDetail_sizeACTV));
+
+		asz.setText(sz);
+	}
+
+
 	protected void setupTypeListener(final Boolean addingToDB)
 	{
 		Spinner typeSpinner = (Spinner) findViewById(R.id.prodDetail_typeSpinner);

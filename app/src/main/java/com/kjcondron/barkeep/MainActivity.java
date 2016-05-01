@@ -166,8 +166,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-		Toast.makeText(this, "Here", Toast.LENGTH_LONG).show();
-        final DBHelper db = new DBHelper(this);
+		final DBHelper db = new DBHelper(this);
         setContentView(R.layout.layout_splash);
         boolean mMakeNewBar = getIntent().getBooleanExtra(NEWBAR, false);
         
@@ -175,13 +174,11 @@ public class MainActivity extends FragmentActivity {
         {
         	try
         	{
-				Toast.makeText(this, "Here2", Toast.LENGTH_LONG).show();
 				final Cursor barCursor = db.getBars();
 				mPager = (ViewPager) findViewById(R.id.pager);
 				mPagerAdapter = new BarScrollAdapter(getSupportFragmentManager(), barCursor);
 				mPager.setAdapter(mPagerAdapter);  	
 				BARID = mPagerAdapter.getId(0); // start of with item 0 shown
-				Toast.makeText(this, "Here3", Toast.LENGTH_LONG).show();
 				mPager.setOnPageChangeListener(new OnPageChangeListener() {
 					
 					@Override
@@ -214,7 +211,6 @@ public class MainActivity extends FragmentActivity {
     
     public void makeNewBar()
     {
-		Toast.makeText(this, "MakeNewBar", Toast.LENGTH_LONG).show();
 		setContentView(R.layout.layout_splash);
     	final DBHelper db = new DBHelper(this);
     	final EditText edtBarName = (EditText)findViewById(R.id.edtBarName);
@@ -228,7 +224,6 @@ public class MainActivity extends FragmentActivity {
 				{
 					BARID = db.newBar(v.getText().toString());
 					//startMyActvity(UseActivity.class);
-                    Toast.makeText(ctxt, "About to start", Toast.LENGTH_LONG).show();
                     startMyActvity(AddActivity.class);
 					finish();
 					edtBarName.setVisibility(View.GONE);
@@ -247,14 +242,12 @@ public class MainActivity extends FragmentActivity {
     }
     
     private void startMyActvity(Class<?> cl) {
-        Toast.makeText(this, "In StartMyActvity", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, cl);
     	startActivity(intent);
     }
 
 
     public void startUse(View view) {
-        Toast.makeText(this, "StartUse", Toast.LENGTH_LONG).show();
         if(mMakeNewBar || BARID == -1)
     		makeNewBar();
     	else

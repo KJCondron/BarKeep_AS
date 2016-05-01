@@ -46,7 +46,6 @@ public abstract class DisplayActivity extends Activity {
 	@Override
 	protected void onResume()
 	{
-		//Toast.makeText(this, "resume", Toast.LENGTH_LONG).show();
 		if(mSearchMenuItem != null)
 			MenuItemCompat.collapseActionView(mSearchMenuItem);
 		super.onResume();
@@ -78,7 +77,6 @@ public abstract class DisplayActivity extends Activity {
 		setContentView(layoutId);
 		final AbsListView view = (AbsListView) findViewById(viewID);
 		try{
-			Toast.makeText(this, "setOnItemClickListener 1", Toast.LENGTH_LONG).show();
 
 			view.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

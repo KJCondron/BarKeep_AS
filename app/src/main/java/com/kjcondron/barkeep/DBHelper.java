@@ -10,7 +10,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.kjcondron.barkeep.SearchActivity.SrchTyp;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
