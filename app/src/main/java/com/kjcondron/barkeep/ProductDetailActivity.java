@@ -21,10 +21,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.FilterQueryProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class ProductDetailActivity extends Activity {
 	
@@ -124,20 +126,26 @@ public class ProductDetailActivity extends Activity {
 
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             typeSpinner.setAdapter(adapter);
-
-			setupTypeSpinner(upcDeets.getString(upcDeets.getColumnIndex("product_type")));
+            setupTypeSpinner(upcDeets.getString(upcDeets.getColumnIndex("product_type")));
 			setupTypeListener(true);
 			setupBrandAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("brand")));
 			setupProductAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("product_name")));
             setSizeAuto(upcDeets.getString(upcDeets.getColumnIndex("size")));
 
-            findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
-            findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
+            Button commit = (Button) findViewById(R.id.prodDetail_commitItemAddToProducts);
+			commit.setText("Update");
+			final Context ctx = this;
+			commit.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(ctx, "SAVE EDITS", Toast.LENGTH_LONG).show();;
+				};
 
-
-        }
+			});
+		}
         catch(Exception e)
         {
+            Toast.makeText(this, "createEdit Exception:" + e.getMessage(), Toast.LENGTH_LONG).show();
             MainActivity.log_exception(this, e, "ProductDetailActivity.createEdit");
         }
 

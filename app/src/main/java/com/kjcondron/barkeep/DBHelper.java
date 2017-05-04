@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.kjcondron.barkeep.SearchActivity.SrchTyp;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
@@ -24,6 +25,8 @@ public class DBHelper extends SQLiteAssetHelper  {
 	public DBHelper(Context ctxt) {
 		super(ctxt, DATABASE_NAME, null, DATABASE_VERSION);
 		m_context = ctxt;
+
+        //Toast.makeText(ctxt, m_context.getApplicationInfo().dataDir + "/databases", Toast.LENGTH_LONG).show();
 	}
 
 	public Cursor getTables()
