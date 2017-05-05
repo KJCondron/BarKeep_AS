@@ -381,14 +381,17 @@ public class DBHelper extends SQLiteAssetHelper  {
 	{
 		SQLiteDatabase dbw = getWritableDatabase();
 
-			ContentValues values = new ContentValues();
-			values.put("product_key", typeId);
-			values.put("product_name", name);
-			values.put("brand", brand);
-			values.put("upc", UPC);
-			values.put("ean", "1111");
-			values.put("size", size);
+		ContentValues values = new ContentValues();
+		values.put("product_key", typeId);
+		values.put("product_name", name);
+		values.put("brand", brand);
+		values.put("upc", UPC);
+		values.put("ean", "1111");
+		values.put("size", size);
 
+		if(UPCExsits(UPC))
+			dbw.update("Products", values, "upc=?", new String[]{UPC});
+		else
 			dbw.insert("Products", "", values);
 
 			Cursor c=getFromUPC(UPC);

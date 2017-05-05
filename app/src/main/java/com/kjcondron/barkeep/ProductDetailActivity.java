@@ -118,7 +118,7 @@ public class ProductDetailActivity extends Activity {
                             this,
                             android.R.layout.simple_spinner_item);
 
-            String upc = intent.getStringExtra(UPC);
+            final String upc = intent.getStringExtra(UPC);
 
             Cursor upcDeets = m_db.getFromUPC(upc);
             upcDeets.moveToFirst();
@@ -138,7 +138,18 @@ public class ProductDetailActivity extends Activity {
 			commit.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(ctx, "SAVE EDITS", Toast.LENGTH_LONG).show();;
+					try{
+						m_db.writeProduct(
+							getTypeId(),
+							getBrandAuto(),
+							getProductAuto(),
+							getSizeAuto(),
+							upc);
+					}
+					catch (Exception ex)
+					{
+						Toast.makeText(ctx, "FAILED SAVE EDITS", Toast.LENGTH_LONG).show();
+					}
 				};
 
 			});
