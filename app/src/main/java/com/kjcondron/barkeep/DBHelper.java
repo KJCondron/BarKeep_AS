@@ -553,13 +553,14 @@ public class DBHelper extends SQLiteAssetHelper  {
 
 	}
 
-	public void saveDB(Context context)
+	public String saveDB(Context context)
 	{
 		try{
 		close();
 		String dir = context.getApplicationInfo().dataDir + "/databases";
 		String path = dir +"/" + DATABASE_NAME;
 		String DEST = Environment.getExternalStorageDirectory().getPath()+"/barkeep_db";
+		Toast.makeText(context,"dest:"+DEST, Toast.LENGTH_LONG).show();
 		FileInputStream dbs = new FileInputStream(path);
 		File f = new File(DEST);
 		FileOutputStream ds = new FileOutputStream(f);
@@ -571,10 +572,12 @@ public class DBHelper extends SQLiteAssetHelper  {
         ds.flush();
         ds.close();
         dbs.close();
+        return DEST;
         }
 		catch(Exception e)
 		{
 			MainActivity.log_exception(context, e, "saveDB");
+			return "NONE";
 		}
 	}
 

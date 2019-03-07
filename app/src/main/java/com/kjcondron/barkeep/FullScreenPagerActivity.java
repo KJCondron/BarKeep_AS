@@ -127,8 +127,9 @@ public class FullScreenPagerActivity extends FragmentActivity {
 	    	startActivity(sIntent);
 			return true;
 		case R.id.savedb:
-			(new DBHelper(this)).saveDB(this);
-			Toast.makeText(this, "saved db", Toast.LENGTH_LONG).show();
+			String dest = (new DBHelper(this)).saveDB(this);
+			Toast.makeText(this, "saved dbzz", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "dest:"+dest, Toast.LENGTH_LONG).show();
 			return true;
 		case R.id.new_bar:
 			Intent nintent = new Intent(this, MainActivity.class);
