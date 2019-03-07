@@ -193,6 +193,9 @@ public abstract class DisplayActivity extends Activity {
 			nintent.putExtra(MainActivity.NEWBAR, true);
 			startActivity(nintent);
 			return true;
+		case R.id.delete_bar:
+		    Toast.makeText(this, "delete db1", Toast.LENGTH_LONG).show();
+		    return true;
 		case R.id.change_bar:
 			Intent cintent = new Intent(this, MainActivity.class);
 			startActivity(cintent);

@@ -466,6 +466,12 @@ public class DBHelper extends SQLiteAssetHelper  {
 		return getBarId(barName);
 	}
 
+	public void removeBar(String barName)
+	{
+		SQLiteDatabase dbw = getWritableDatabase();
+		dbw.delete("ShoppingList", "name="+barName, null);
+	}
+
 	public int getBarId(String barName)
 	{
 		SQLiteDatabase db = getReadableDatabase();

@@ -179,7 +179,7 @@ public class MainActivity extends FragmentActivity {
 				mPagerAdapter = new BarScrollAdapter(getSupportFragmentManager(), barCursor);
 				mPager.setAdapter(mPagerAdapter);  	
 				BARID = mPagerAdapter.getId(0); // start of with item 0 shown
-				mPager.setOnPageChangeListener(new OnPageChangeListener() {
+				mPager.addOnPageChangeListener(new OnPageChangeListener() {
 					
 					@Override
 					public void onPageSelected(int arg0) {
