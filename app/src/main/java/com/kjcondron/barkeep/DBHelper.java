@@ -5,22 +5,30 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.MessageFormat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.kjcondron.barkeep.SearchActivity.SrchTyp;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
-public class DBHelper extends SQLiteAssetHelper  {
+
+public class DBHelper extends SQLiteAssetHelper implements ActivityCompat.OnRequestPermissionsResultCallback  {
 
 	private static final String DATABASE_NAME = "barkeep";
 	private static final int DATABASE_VERSION = 1;
 	public static final String NOT_FOUND = "NOT_FOUND";
-	private final Context m_context;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_STORAGE = 7;
+    private boolean SAVE_DB=false;
+    private final Context m_context;
 
 	public DBHelper(Context ctxt) {
 		super(ctxt, DATABASE_NAME, null, DATABASE_VERSION);
@@ -559,18 +567,70 @@ public class DBHelper extends SQLiteAssetHelper  {
 
 	}
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    SAVE_DB =true;
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    SAVE_DB =false;
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
+
 	public String saveDB(Context context)
 	{
 		try{
-		close();
-		String dir = context.getApplicationInfo().dataDir + "/databases";
-		String path = dir +"/" + DATABASE_NAME;
-		String DEST = Environment.getExternalStorageDirectory().getPath()+"/barkeep_db";
-		Toast.makeText(context,"dest:"+DEST, Toast.LENGTH_LONG).show();
-		FileInputStream dbs = new FileInputStream(path);
-		File f = new File(DEST);
-		FileOutputStream ds = new FileOutputStream(f);
-		byte[] buffer = new byte[1024];
+            close();
+            if(ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            {
+                // need to request permission to write external storage
+                ActivityCompat.requestPermissions((Activity)context,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_WRITE_STORAGE);
+
+                // permission handled by callback, check result
+                if(SAVE_DB)
+                    return saveDB2(context);
+                else
+                {
+                    Toast.makeText(context,"save permission denied", Toast.LENGTH_LONG).show();
+                    return "NOT SAVED";
+                }
+            }
+            else
+                // already had permission, just save
+                return saveDB2(context);
+        }
+		catch(Exception e)
+		{
+			MainActivity.log_exception(context, e, "saveDB");
+			return "EXCEPTION";
+		}
+	}
+
+    public String saveDB2(Context context) throws java.io.IOException
+    {
+        String dir = context.getApplicationInfo().dataDir + "/databases";
+        String path = dir +"/" + DATABASE_NAME;
+        File f2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "new_barkeep_db");
+        Toast.makeText(context,"dest:"+f2.getAbsolutePath(), Toast.LENGTH_LONG).show();
+        FileInputStream dbs = new FileInputStream(path);
+        FileOutputStream ds = new FileOutputStream(f2);
+        byte[] buffer = new byte[1024];
         int length;
         while ((length = dbs.read(buffer))>0){
             ds.write(buffer, 0, length);
@@ -578,13 +638,7 @@ public class DBHelper extends SQLiteAssetHelper  {
         ds.flush();
         ds.close();
         dbs.close();
-        return DEST;
-        }
-		catch(Exception e)
-		{
-			MainActivity.log_exception(context, e, "saveDB");
-			return "NONE";
-		}
-	}
+        return f2.getAbsolutePath();
+    }
 
 }
