@@ -24,6 +24,7 @@ import android.widget.SearchView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+// not used anyomre?
 public abstract class DisplayActivity extends Activity {
 
 	private Boolean gridView = false;
@@ -45,7 +46,6 @@ public abstract class DisplayActivity extends Activity {
 	@Override
 	protected void onResume()
 	{
-		//Toast.makeText(this, "resume", Toast.LENGTH_LONG).show();
 		if(mSearchMenuItem != null)
 			MenuItemCompat.collapseActionView(mSearchMenuItem);
 		super.onResume();
@@ -70,14 +70,15 @@ public abstract class DisplayActivity extends Activity {
 		}
 	}
 	
-	
+
+    // not called
 	protected AbsListView getLGView(int layoutId, int viewID, int itemLayoutID)
 	{
 		setContentView(layoutId);
 		final AbsListView view = (AbsListView) findViewById(viewID);
 		try{
-		view.setOnItemClickListener(new OnItemClickListener() {
-	        
+
+			view.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	            SimpleCursorAdapter Cu = (SimpleCursorAdapter)parent.getAdapter();
 	            Integer iid = Cu.getCursor().getInt(Cu.getCursor().getColumnIndex("_id"));
@@ -192,6 +193,9 @@ public abstract class DisplayActivity extends Activity {
 			nintent.putExtra(MainActivity.NEWBAR, true);
 			startActivity(nintent);
 			return true;
+		case R.id.delete_bar:
+		    Toast.makeText(this, "delete db1", Toast.LENGTH_LONG).show();
+		    return true;
 		case R.id.change_bar:
 			Intent cintent = new Intent(this, MainActivity.class);
 			startActivity(cintent);

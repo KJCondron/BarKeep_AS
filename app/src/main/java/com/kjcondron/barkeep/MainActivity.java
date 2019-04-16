@@ -165,8 +165,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
-        final DBHelper db = new DBHelper(this);
+
+		final DBHelper db = new DBHelper(this);
         setContentView(R.layout.layout_splash);
         boolean mMakeNewBar = getIntent().getBooleanExtra(NEWBAR, false);
         
@@ -174,12 +174,12 @@ public class MainActivity extends FragmentActivity {
         {
         	try
         	{
-        		final Cursor barCursor = db.getBars();
+				final Cursor barCursor = db.getBars();
 				mPager = (ViewPager) findViewById(R.id.pager);
 				mPagerAdapter = new BarScrollAdapter(getSupportFragmentManager(), barCursor);
 				mPager.setAdapter(mPagerAdapter);  	
 				BARID = mPagerAdapter.getId(0); // start of with item 0 shown
-				mPager.setOnPageChangeListener(new OnPageChangeListener() {
+				mPager.addOnPageChangeListener(new OnPageChangeListener() {
 					
 					@Override
 					public void onPageSelected(int arg0) {
@@ -199,7 +199,7 @@ public class MainActivity extends FragmentActivity {
         	catch(Exception e)
         	{
         		BARID=1;
-        		startMyActvity(UseActivity.class);
+        		//startMyActvity(UseActivity.class);
             	finish();
             	return;
         	}
@@ -211,10 +211,11 @@ public class MainActivity extends FragmentActivity {
     
     public void makeNewBar()
     {
-    	setContentView(R.layout.layout_splash);
+		setContentView(R.layout.layout_splash);
     	final DBHelper db = new DBHelper(this);
     	final EditText edtBarName = (EditText)findViewById(R.id.edtBarName);
     	edtBarName.setVisibility(View.VISIBLE);
+        final Context ctxt = this;
     	edtBarName.setOnEditorActionListener(new OnEditorActionListener() {
 			
 			@Override
@@ -222,8 +223,8 @@ public class MainActivity extends FragmentActivity {
 				if(actionId == EditorInfo.IME_ACTION_DONE)
 				{
 					BARID = db.newBar(v.getText().toString());
-					startMyActvity(UseActivity.class);
-					startMyActvity(AddActivity.class);
+					//startMyActvity(UseActivity.class);
+                    startMyActvity(AddActivity.class);
 					finish();
 					edtBarName.setVisibility(View.GONE);
 					return true;
@@ -241,24 +242,27 @@ public class MainActivity extends FragmentActivity {
     }
     
     private void startMyActvity(Class<?> cl) {
-    	Intent intent = new Intent(this, cl);
+        Intent intent = new Intent(this, cl);
     	startActivity(intent);
     }
-    
-    public void startAdd(View view) {
-    	startMyActvity(AddActivity.class);
-    }
-    
+
+
     public void startUse(View view) {
-    	if(mMakeNewBar || BARID == -1)
+        if(mMakeNewBar || BARID == -1)
     		makeNewBar();
     	else
     		startMyActvity(FullScreenPagerActivity.class);
     		//startMyActvity(UseActivity.class);
     }
-    
-    public void startShop(View view) {
-    	startMyActvity(ShopActivity.class);
-    }
-    	
+
+    // KJC  - ARE THESE ALSO USED BY THE XML - it appears not
+//    public void startAdd(View view) {
+//    	startMyActvity(AddActivity.class);
+//    }
+
+//
+//    public void startShop(View view) {
+//    	startMyActvity(ShopActivity.class);
+//    }
+//
 }

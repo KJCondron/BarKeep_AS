@@ -21,16 +21,19 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.FilterQueryProvider;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class ProductDetailActivity extends Activity {
 	
 	public final static String ADD_TO_DB = "com.kjcondron.barkeep.ADD_TO_DB";
 	public final static String UPC = "com.kjcondron.barkeep.UPC";
-	public final static Integer IDCOL = 0;
+    public final static String EDIT = "com.kjcondron.barkeep.EDIT";
+    public final static Integer IDCOL = 0;
 	public final static Integer TYPENAMECOL = 1;
 	
 	private DBHelper m_db;
@@ -58,7 +61,7 @@ public class ProductDetailActivity extends Activity {
 		findViewById(R.id.prodDetail_commitItem).setVisibility(View.VISIBLE);
 		findViewById(R.id.prodDetail_commitItemAddToProducts).setVisibility(View.INVISIBLE);
 	}
-	
+
 	private void createSingleProduct()
 	{
 
@@ -98,12 +101,72 @@ public class ProductDetailActivity extends Activity {
     	}
     
 	}
+
+    private void createEdit()
+    {
+        setContentView(R.layout.layout_add_product);
+        ActionBar ab = getActionBar();
+        ab.setTitle("Edit Product");
+
+        try{
+            Spinner typeSpinner = (Spinner) findViewById(R.id.prodDetail_typeSpinner);
+
+            Intent intent = getIntent();
+
+            ArrayAdapter<CharSequence> adapter =
+                    new ArrayAdapter<CharSequence>(
+                            this,
+                            android.R.layout.simple_spinner_item);
+
+            final String upc = intent.getStringExtra(UPC);
+
+            Cursor upcDeets = m_db.getFromUPC(upc);
+            upcDeets.moveToFirst();
+            assert(upcDeets.getCount() == 1);
+
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            typeSpinner.setAdapter(adapter);
+            setupTypeSpinner(upcDeets.getString(upcDeets.getColumnIndex("product_type")));
+			setupTypeListener(true);
+			setupBrandAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("brand")));
+			setupProductAutoComplete(upcDeets.getString(upcDeets.getColumnIndex("product_name")));
+            setSizeAuto(upcDeets.getString(upcDeets.getColumnIndex("size")));
+
+            Button commit = (Button) findViewById(R.id.prodDetail_commitItemAddToProducts);
+			commit.setText("Update");
+			final Context ctx = this;
+			commit.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try{
+						m_db.writeProduct(
+							getTypeId(),
+							getBrandAuto(),
+							getProductAuto(),
+							getSizeAuto(),
+							upc);
+					}
+					catch (Exception ex)
+					{
+						Toast.makeText(ctx, "FAILED SAVE EDITS", Toast.LENGTH_LONG).show();
+					}
+				};
+
+			});
+		}
+        catch(Exception e)
+        {
+            Toast.makeText(this, "createEdit Exception:" + e.getMessage(), Toast.LENGTH_LONG).show();
+            MainActivity.log_exception(this, e, "ProductDetailActivity.createEdit");
+        }
+
+    }
 	
 	// to-do fix this first
 	private void createProductNotFound()
 	{
 		setContentView(R.layout.layout_add_product);
-		ActionBar ab = getActionBar();
+        ActionBar ab = getActionBar();
 		ab.setTitle("Product Not Found");
 		final boolean guessFromInternet = true;
 		try
@@ -122,11 +185,11 @@ public class ProductDetailActivity extends Activity {
 			{
 				type = m_db.getTypes().getString(TYPENAMECOL);
 			}
-	    	
-	    	setupTypeSpinner(type);
-	    	setupTypeListener(true);
+
+            setupTypeSpinner(type);
+            setupTypeListener(true);
 			setupBrandAutoComplete(brand);
-			setupProductAutoComplete();
+			setupProductAutoComplete(null);
 	    }
 	    catch(Exception e)
 	    {
@@ -147,18 +210,22 @@ public class ProductDetailActivity extends Activity {
 		
 		// a) All products in db, with first spinner set up to show current category
 		// b) specific product found in db (1 per spinner / should be text boxes)
-		// c) an not found upc with editable spinners to allow selection / entry of detail = ADD_TO_DB 
+		// c) a not found upc with editable spinners to allow selection / entry of detail = ADD_TO_DB
 		
 		Intent intent = getIntent();
 	    mAddToDB = intent.getBooleanExtra(ADD_TO_DB, false);
 	    mHaveUPC = intent.hasExtra(UPC);
+
+        boolean haveEdit = intent.hasExtra(EDIT);
 	    
-	    if(mHaveUPC)
+	    if(mHaveUPC && !haveEdit)
 	    	if(mAddToDB)
 	    		createProductNotFound();
 	    	else
 	    		createSingleProduct();
-	    else
+	    else if(mHaveUPC && haveEdit)
+			createEdit();
+		else
 	    	createAllProducts();
 	    
 	}
@@ -180,7 +247,7 @@ public class ProductDetailActivity extends Activity {
 	private String getBrandAuto()
 	{
 		return ((AutoCompleteTextView) findViewById(
-					R.id.prodDetail_brandACTV)).getText().toString();
+                R.id.prodDetail_brandACTV)).getText().toString();
 	}
 	
 	private String getProductAuto()
@@ -194,7 +261,16 @@ public class ProductDetailActivity extends Activity {
 		return ((AutoCompleteTextView) findViewById(
 					R.id.prodDetail_sizeACTV)).getText().toString();
 	}
-		
+
+	private void setSizeAuto(String sz)
+	{
+		AutoCompleteTextView asz = ((AutoCompleteTextView) findViewById(
+				R.id.prodDetail_sizeACTV));
+
+		asz.setText(sz);
+	}
+
+
 	protected void setupTypeListener(final Boolean addingToDB)
 	{
 		Spinner typeSpinner = (Spinner) findViewById(R.id.prodDetail_typeSpinner);
@@ -262,7 +338,7 @@ public class ProductDetailActivity extends Activity {
 			    	Cursor c = (Cursor)bs.getSelectedItem();
 			    	String brand = c.getString(c.getColumnIndex("brand"));
 			    	TextView tv = (TextView) selectedItemView;
-			    	String prod= tv.getText().toString();
+			    	String prod = tv.getText().toString();
 			    	setupSizeSpinner(getType(), brand, prod);
 		    	}
 		    }
@@ -332,7 +408,7 @@ public class ProductDetailActivity extends Activity {
 		    typeSpinner.setAdapter(adapter);
 		    for(int i=0; i<adapter.getCount(); ++i)
 		    {
-		    	SQLiteCursor cur = (SQLiteCursor)adapter.getItem(i);
+		    	SQLiteCursor cur = (SQLiteCursor) adapter.getItem(i);
 		    	int val = cur.getInt(IDCOL);
 		    	if(val == typeid)
 		    	{
@@ -477,7 +553,7 @@ public class ProductDetailActivity extends Activity {
 	    
 	}
 	
-	protected void setupProductAutoComplete()
+	protected void setupProductAutoComplete(String productName)
 	{
 		try
 		{
@@ -493,67 +569,65 @@ public class ProductDetailActivity extends Activity {
 		    		c, 
 		    		new String[]{ "product_name" },
 		    		new int[] { android.R.id.text1 },
-		    		CursorAdapter.NO_SELECTION );
-		    
-		    adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
-				
-				@Override
-				public CharSequence convertToString(Cursor cursor) {
-					return cursor.getString(cursor.getColumnIndex("product_name"));
-				}
-			});
+		    		CursorAdapter.NO_SELECTION);
+
+            adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+
+                @Override
+                public CharSequence convertToString(Cursor cursor) {
+                    return cursor.getString(cursor.getColumnIndex("product_name"));
+                }
+            });
 		    
 		    final Context ctxt = this;
-		    adapter.setFilterQueryProvider(new FilterQueryProvider() {
-				
-				@Override
-				public Cursor runQuery(CharSequence constraint) {
-					try
-					{
-						return m_db.getProductsFilter(getType(), getBrandAuto(), constraint);
-					}
-					catch(Exception e)
-					{
-						MainActivity.log_exception(ctxt, e, "setupProductAutoComplete.runQuery");
-						return null;
-					}
-				}
-			});
+            adapter.setFilterQueryProvider(new FilterQueryProvider() {
+
+                @Override
+                public Cursor runQuery(CharSequence constraint) {
+                    try {
+                        return m_db.getProductsFilter(getType(), getBrandAuto(), constraint);
+                    } catch (Exception e) {
+                        MainActivity.log_exception(ctxt, e, "setupProductAutoComplete.runQuery");
+                        return null;
+                    }
+                }
+            });
 		    
 		    prod.setAdapter(adapter);
 		    
 		    prod.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					AutoCompleteTextView av = (AutoCompleteTextView) v;
-					av.showDropDown();
-					return;
-				}
-			});
+
+                @Override
+                public void onClick(View v) {
+                    AutoCompleteTextView av = (AutoCompleteTextView) v;
+                    av.showDropDown();
+                    return;
+                }
+            });
 		    
 		    prod.setOnItemClickListener(new OnItemClickListener() {
-			
-		    	@Override
-		    	public void onItemClick(AdapterView<?> parent, View selected, int pos, long id)
-		    	{
-		    		return;
-		    	}
-		    });
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View selected, int pos, long id) {
+                    return;
+                }
+            });
 		    
 		    prod.setOnFocusChangeListener(new OnFocusChangeListener() {
-				
-				@Override
-				public void onFocusChange(View v, boolean hasFocus) {
-					if(hasFocus)
-					{
-						AutoCompleteTextView av = (AutoCompleteTextView) v;
-						//av.showDropDown();
-					}
-				}
-			});
-		
 
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        AutoCompleteTextView av = (AutoCompleteTextView) v;
+                        //av.showDropDown();
+                    }
+                }
+            });
+
+            if(prod != null)
+                prod.setText(productName);
+            else
+                prod.setText(productName);
 		}
 		catch(Exception e)
 		{

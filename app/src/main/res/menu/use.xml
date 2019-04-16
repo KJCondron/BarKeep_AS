@@ -25,8 +25,13 @@
         android:id="@+id/change_bar"
         android:showAsAction="never"
         android:title="change bar"/>
-     
-     <item
+
+    <item
+        android:id="@+id/delete_bar"
+        android:showAsAction="never"
+        android:title="delete bar"/>
+
+    <item
         android:id="@+id/savedb"
         android:showAsAction="never"
         android:title="save db"/>

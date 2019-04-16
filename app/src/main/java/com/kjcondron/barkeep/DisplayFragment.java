@@ -3,6 +3,7 @@ package com.kjcondron.barkeep;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -18,6 +19,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+
 
 public abstract class DisplayFragment extends Fragment {
 	
@@ -88,8 +91,79 @@ public abstract class DisplayFragment extends Fragment {
 			//return new TextView(this.getActivity());
 		}
 	}
-	
-	protected View getLGView(
+
+	class ItemClickListener implements OnItemClickListener {
+
+		final LayoutInflater mInflater;
+		final Context mCtxt;
+
+		public ItemClickListener(final LayoutInflater inflater,
+								 final Context ctxt)
+		{
+			mInflater=inflater;
+			mCtxt=ctxt;
+		}
+
+		public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+			SimpleCursorAdapter Cu = (SimpleCursorAdapter) parent.getAdapter();
+			Integer iid = Cu.getCursor().getInt(Cu.getCursor().getColumnIndex("_id"));
+			final int prodId = mdb.updateQuantity(iid);
+			if (prodId != -1) {
+				DialogInterface.OnClickListener dcl = new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+							case DialogInterface.BUTTON_POSITIVE:
+								mdb.addToShopping(prodId, MainActivity.BARID);
+							case DialogInterface.BUTTON_NEGATIVE:
+						}
+					}
+				};
+				mbuilder.setMessage("Add To Shopping List?").setPositiveButton("Yes", dcl).setNegativeButton("No", dcl).show();
+			}
+
+			int idx = parent.getFirstVisiblePosition();
+			View top = parent.getChildAt(0);
+			int offset = (top == null) ? 0 : v.getTop();
+			try {
+				setupView(mInflater, gridView);
+			} catch (Exception e) {
+				MainActivity.log_exception(mCtxt, e, "Failed to update view");
+			}
+			pager.getAdapter().notifyDataSetChanged();
+
+			// restore position
+			if (!gridView) {
+				ListView lv2 = (ListView) parent;
+				lv2.setSelectionFromTop(idx, offset);
+			}
+		}
+	}
+
+    class ItemLongClickListener implements OnItemLongClickListener {
+
+        final LayoutInflater mInflater;
+        final Context mCtxt;
+
+        public ItemLongClickListener(final LayoutInflater inflater,
+                                 final Context ctxt) {
+            mInflater = inflater;
+            mCtxt = ctxt;
+        }
+
+        public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+            Intent in = new Intent(mCtxt, ProductDetailActivity.class);
+            SimpleCursorAdapter Cu = (SimpleCursorAdapter) parent.getAdapter();
+            String upc = Cu.getCursor().getString(Cu.getCursor().getColumnIndex("upc"));
+            in.putExtra(ProductDetailActivity.UPC, upc);
+			in.putExtra(ProductDetailActivity.EDIT, true);
+            startActivity(in);
+            return true;
+        }
+    }
+
+    protected View getLGView(
 			final LayoutInflater inflater,
 			int layoutId,
 			int viewID,
@@ -100,65 +174,13 @@ public abstract class DisplayFragment extends Fragment {
 		final AbsListView view = (AbsListView) rootView.findViewById(viewID);
 		view.setAdapter(adapter);
 		try{
-			final Context ctxt = getActivity(); 
-			view.setOnItemClickListener(new OnItemClickListener() {
-	        
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            SimpleCursorAdapter Cu = (SimpleCursorAdapter)parent.getAdapter();
-	            Integer iid = Cu.getCursor().getInt(Cu.getCursor().getColumnIndex("_id"));
-	            final int prodId = mdb.updateQuantity(iid);
-	            if( prodId != -1 )
-	            {
-	            	DialogInterface.OnClickListener dcl = new DialogInterface.OnClickListener() {
-
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							switch(which){
-								case DialogInterface.BUTTON_POSITIVE:
-									mdb.addToShopping(prodId, MainActivity.BARID);
-								case DialogInterface.BUTTON_NEGATIVE:
-							}
-						
-						}
-					};
-					
-					mbuilder.setMessage("Add To Shopping List?").setPositiveButton("Yes", dcl).setNegativeButton("No", dcl).show();
-	            }
-	            
-	            int idx = parent.getFirstVisiblePosition();
-	            View top = parent.getChildAt(0);
-	            int offset = (top == null) ? 0 : v.getTop();
-	            try
-	            {
-	            	setupView(inflater, gridView);
-	            }
-	            catch(Exception e)
-				{
-					MainActivity.log_exception(ctxt, e, "Failed to update view");
-				}
-				pager.getAdapter().notifyDataSetChanged();
-	            
-	            // restore position
-	            if(!gridView)
-	            {
-	            	ListView lv2 = (ListView) parent;
-	            	lv2.setSelectionFromTop(idx, offset);
-	            }
-	            
-	        }
-		});
-		
-		view.setOnTouchListener( new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {					
-				return false;
-			}
-		});
-		}
+			final Context ctxt = getActivity();
+			view.setOnItemClickListener( new ItemClickListener(inflater, ctxt) );
+		    view.setOnItemLongClickListener(new ItemLongClickListener(inflater, ctxt));
+	    }
 		catch(Exception e)
 		{
-			MainActivity.log_exception(this.getActivity(), e, "ShopActicity.getLGView");
+			MainActivity.log_exception(getActivity(), e, "DisplayFragment.getLGView");
 		}
 	        
 	    return rootView;
