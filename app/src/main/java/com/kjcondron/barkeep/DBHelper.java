@@ -407,6 +407,12 @@ public class DBHelper extends SQLiteAssetHelper implements ActivityCompat.OnRequ
 			return c.getInt(c.getColumnIndex("_id"));
 	}
 
+	public void deleteBar(int barID)
+    {
+        SQLiteDatabase dbw = getWritableDatabase();
+        dbw.delete("Bars", "_id="+barID, null);
+    }
+
 	public int updateQuantity(Integer invId)
 	{
 		String sql = "select * from vInventory where _id=" + invId;

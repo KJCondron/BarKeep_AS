@@ -141,7 +141,8 @@ public class FullScreenPagerActivity extends FragmentActivity {
 			startActivity(cintent);
 			return true;
 		case R.id.delete_bar:
-			Toast.makeText(this, "delete db3", Toast.LENGTH_LONG).show();
+			new DBHelper(this).deleteBar(MainActivity.BARID);
+            Toast.makeText(this, "Bar deleted", Toast.LENGTH_LONG).show();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
